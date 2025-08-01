@@ -49,11 +49,6 @@ The system uses a client-server architecture:
    - Converts raw audio to playable format
    - Plays through Mac speakers via sox `play`.
 
-### Audio Pipeline
-```
-MP3 → mpg123 → JACK → jack_capture → socat → UDP:8000 → Mac → play
-```
-
 ## Requirements
 
 - Docker
