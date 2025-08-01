@@ -2,7 +2,10 @@ FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y \
     jackd2 \
-    jack-capture \
+    jack-stdio \
+    jack-play \
+    jack_metro \
+    jack_test \
     socat \
     mpg123 \
     && rm -rf /var/lib/apt/lists/*

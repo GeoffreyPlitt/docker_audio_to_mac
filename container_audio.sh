@@ -10,7 +10,7 @@ sleep 3
 
 jack_lsp -c
 
-jack_capture -c 2 -f s16 --port system:monitor_1 --port system:monitor_2 --stdout --no-header | \
+jack-stdout -b 16 -e signed system:monitor_1 system:monitor_2 | \
 socat -d -d -v -v -b 192 - UDP:host.docker.internal:8000,sndbuf=384
 
 # mpg123 -o jack -b 1024 -T --no-gapless /audio/test.mp3
