@@ -1,6 +1,6 @@
 # docker_audio_to_mac
 
-This repository demonstrates streaming audio from a Docker container to a Mac host using JACK audio server on the container, sox on Mac, and a `socat` UDP network stream inbetween.
+This repository demonstrates streaming audio from a Docker container to a Mac host using `JACK` audio server in the container, `sox` on Mac, and a `socat` UDP network stream inbetween.
 
 ## Quick Start
 
