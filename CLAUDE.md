@@ -25,9 +25,6 @@ honcho start
 # Build Docker image
 docker build --tag jack-repro .
 
-# Interactive shell in container
-./shell.sh
-
 # Run command in container
 ./run_docker.sh <command>
 ```
