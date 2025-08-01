@@ -5,7 +5,7 @@
 #   ./run_docker.sh              # Opens interactive shell
 #   ./run_docker.sh ls -la       # Runs command and exits
 
-set -e
+set -ex
 
 # Source the centralized configuration
 source ./docker_config.sh
