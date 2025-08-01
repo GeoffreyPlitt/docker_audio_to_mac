@@ -3,7 +3,7 @@
 # Docker audio sender script
 # Builds and runs the JACK audio streaming container
 
-set -e
+set -ex
 
 echo "Building Docker image..."
 docker build --tag jack-repro .
