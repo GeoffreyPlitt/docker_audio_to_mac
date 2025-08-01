@@ -1,19 +1,31 @@
 #!/bin/bash
 
-echo "Starting JACK audio server..."
-jackd -d dummy -r 48000 -p 512 --monitor &
+echo "=== Starting JACK audio server ==="
+jackd -d dummy --monitor -r 48000 -p 256 &
 JACK_PID=$!
+echo "JACK PID: $JACK_PID"
 
-sleep 2
+sleep 3
 
-echo "Starting MP3 playback..."
-mpg123 -j /audio/test.mp3 &
+echo "=== Checking if JACK is running ==="
+if ! kill -0 $JACK_PID 2>/dev/null; then
+    echo "ERROR: JACK failed to start!"
+    exit 1
+fi
+
+echo "=== Starting MP3 playback (looped) ==="
+mpg123 -o jack --loop -1 /audio/test.mp3 &
 PLAYBACK_PID=$!
+echo "Playback PID: $PLAYBACK_PID"
 
-sleep 1
+sleep 3
 
-echo "Starting audio capture and streaming..."
-jack_capture -c 2 -f s16 --port system:monitor_* --stdout --no-header | \
-socat -v -v -b 192 - UDP-DATAGRAM:host.docker.internal:8000,sndbuf=384
+echo "=== Checking JACK connections ==="
+jack_lsp -c || echo "jack_lsp failed, continuing anyway"
 
-kill $PLAYBACK_PID $JACK_PID 2>/dev/null
+echo "=== Starting audio capture and streaming for 30 seconds ==="
+jack_capture -c 2 -f s16 --port system:monitor_1 --port system:monitor_2 --stdout --no-header --duration 30 | \
+socat -d -d -v -v -b 192 - UDP:host.docker.internal:8000,sndbuf=384
+
+echo "=== Cleaning up ==="
+kill $PLAYBACK_PID $JACK_PID 2>/dev/null || echo "Process cleanup completed"
