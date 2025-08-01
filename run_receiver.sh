@@ -37,6 +37,16 @@ else
     exit 1
 fi
 
+echo "Checking for existing socat processes..."
+EXISTING_SOCAT=$(pgrep -f "socat.*UDP-LISTEN:8000" || true)
+if [ -n "$EXISTING_SOCAT" ]; then
+    echo "Found existing socat processes, killing them: $EXISTING_SOCAT"
+    pkill -f "socat.*UDP-LISTEN:8000"
+    echo "Killed existing socat processes"
+else
+    echo "No existing socat processes found"
+fi
+
 echo "Starting audio receiver..."
 set -x
 socat -d -d -b 192 UDP-LISTEN:8000,reuseaddr - | play -t raw -r 48000 -e signed -b 16 -c 2 -
