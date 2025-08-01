@@ -39,15 +39,15 @@ You can also run components separately:
 The system uses a client-server architecture:
 
 1. **Server (Docker Container)**:
-   - Runs JACK audio server in dummy mode
+   - Runs JACK audio server in dummy mode with `--monitor` to get monitoring ports.
    - Plays test.mp3 using mpg123 through JACK
-   - Captures audio from JACK monitor ports
-   - Streams raw audio over UDP port 8000
+   - `jack-stdout` Captures audio from JACK monitor ports, pipes it to STDOUT.
+   - `socat` reads that data, streams the raw audio over UDP port 8000
 
 2. **Client (Mac Host)**:
-   - Receives UDP audio stream
+   - `socat` Receives UDP audio stream
    - Converts raw audio to playable format
-   - Plays through Mac speakers
+   - Plays through Mac speakers via sox `play`.
 
 ### Audio Pipeline
 ```
